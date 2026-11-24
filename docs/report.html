@@ -4,14 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reporte Técnico: Diseño e Implementación de C# 12 mediante Mini-REPL en RPN — CAO604</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
   <style>
     @page {
       size: letter;
-      margin: 16mm 17mm 18mm 17mm;
+      margin: 12mm 14mm 14mm 14mm;
       @bottom-center {
         content: "Universidad de Carabobo · FACYT · CAO604 Lenguajes de Programación   |   Pág. " counter(page) " de " counter(pages);
-        font-family: "Georgia", "Times New Roman", serif;
-        font-size: 8.5pt;
+        font-family: "Montserrat", sans-serif;
+        font-size: 7.8pt;
         color: #4b5563;
       }
     }
@@ -33,94 +36,95 @@
 
     * {
       box-sizing: border-box;
+      font-family: "Montserrat", sans-serif;
     }
 
     body {
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size: 9.6pt;
-      line-height: 1.48;
+      font-family: "Montserrat", sans-serif;
+      font-size: 8.65pt;
+      line-height: 1.42;
       color: var(--body);
       margin: 0;
       padding: 0;
       background: #ffffff;
+      font-variant-numeric: tabular-nums;
     }
 
-    /* Portada formal académica convencional */
+    /* Portada formal académica compacta para aprovechar toda la hoja 1 */
     .cover {
       border: 1px solid var(--line);
       border-top: 3px solid var(--ink);
-      padding: 24px 28px;
-      margin-bottom: 18px;
+      padding: 14px 20px 14px 20px;
+      margin-bottom: 10px;
       background: #ffffff;
     }
 
     .uni-header {
       text-align: center;
       border-bottom: 1px solid var(--line-soft);
-      padding-bottom: 14px;
-      margin-bottom: 18px;
+      padding-bottom: 9px;
+      margin-bottom: 10px;
     }
 
     .uni-header .uni {
-      font-size: 13pt;
+      font-size: 11.5pt;
       font-weight: 700;
-      letter-spacing: 0.9px;
+      letter-spacing: 0.8px;
       color: var(--ink);
       text-transform: uppercase;
     }
 
     .uni-header .fac {
-      font-size: 10.5pt;
+      font-size: 9.5pt;
       font-weight: 600;
       color: var(--body);
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .uni-header .course {
-      font-size: 9.5pt;
+      font-size: 8.6pt;
       color: var(--muted);
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
     .uni-header .term {
-      font-size: 9.5pt;
+      font-size: 8.6pt;
       font-weight: 700;
       color: var(--ink);
-      margin-top: 8px;
+      margin-top: 4px;
     }
 
     h1.doc-title {
-      font-size: 16.5pt;
-      line-height: 1.28;
+      font-size: 13.8pt;
+      line-height: 1.26;
       color: var(--ink);
       text-align: center;
-      margin: 12px 0 8px 0;
+      margin: 8px 0 5px 0;
       font-weight: 700;
     }
 
     p.doc-subtitle {
       text-align: center;
-      font-size: 10pt;
+      font-size: 8.6pt;
       font-style: italic;
       color: var(--muted);
-      margin: 0 0 18px 0;
+      margin: 0 0 10px 0;
     }
 
     .meta-grid {
       width: 100%;
       border-collapse: collapse;
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 9pt;
-      margin-top: 8px;
+      font-size: 8.2pt;
+      margin-top: 4px;
     }
 
     .meta-grid td {
-      padding: 6px 10px;
+      padding: 4.5px 9px;
       border: 1px solid var(--line-soft);
     }
 
     .meta-grid td.label {
-      width: 26%;
+      width: 24%;
       font-weight: 700;
       background: #f3f4f6;
       color: var(--ink);
@@ -128,39 +132,37 @@
 
     /* Secciones y encabezados */
     h2 {
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 12pt;
+      font-size: 10.8pt;
       font-weight: 700;
       color: var(--ink);
       border-bottom: 1.5px solid var(--ink);
-      padding-bottom: 3px;
-      margin: 20px 0 9px 0;
+      padding-bottom: 2.5px;
+      margin: 13px 0 6px 0;
       page-break-after: avoid;
       break-after: avoid;
     }
 
     h3 {
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 10.3pt;
+      font-size: 9.4pt;
       font-weight: 700;
       color: var(--ink);
-      margin: 13px 0 5px 0;
+      margin: 9px 0 4px 0;
       page-break-after: avoid;
       break-after: avoid;
     }
 
     p {
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       text-align: justify;
     }
 
     ul, ol {
-      margin: 4px 0 9px 0;
-      padding-left: 20px;
+      margin: 3px 0 7px 0;
+      padding-left: 18px;
     }
 
     li {
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       text-align: justify;
     }
 
@@ -168,9 +170,12 @@
     table.data-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 9px 0 13px 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 8.6pt;
+      margin: 6px 0 9px 0;
+      font-size: 7.9pt;
+      line-height: 1.35;
+    }
+
+    table.data-table tr {
       break-inside: avoid;
     }
 
@@ -178,13 +183,13 @@
       background: var(--bg-header);
       color: #ffffff;
       text-align: left;
-      padding: 6px 8px;
+      padding: 5px 7px;
       font-weight: 700;
       border: 1px solid var(--bg-header);
     }
 
     table.data-table td {
-      padding: 5.5px 8px;
+      padding: 4.5px 7px;
       border: 1px solid var(--line-soft);
       vertical-align: top;
     }
@@ -193,13 +198,14 @@
       background: var(--bg-subtle);
     }
 
-    /* Código inline y bloques */
+    /* Código inline y bloques en Montserrat */
     code {
-      font-family: "Consolas", "Cascadia Code", "Courier New", monospace;
-      font-size: 8.6pt;
+      font-family: "Montserrat", sans-serif;
+      font-size: 8.1pt;
+      font-weight: 600;
       background: #f3f4f6;
       color: var(--ink);
-      padding: 1px 3.5px;
+      padding: 0.5px 3.5px;
       border-radius: 2px;
     }
 
@@ -207,7 +213,7 @@
       border: 1px solid var(--line-soft);
       border-left: 3px solid #374151;
       background: var(--bg-subtle);
-      margin: 8px 0 11px 0;
+      margin: 6px 0 8px 0;
       break-inside: avoid;
       overflow: hidden;
     }
@@ -215,10 +221,9 @@
     .code-header {
       background: var(--bg-bar);
       color: var(--ink);
-      font-family: "Consolas", "Cascadia Code", monospace;
-      font-size: 7.9pt;
+      font-size: 7.5pt;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 3.5px 9px;
       border-bottom: 1px solid var(--line-soft);
       display: flex;
       justify-content: space-between;
@@ -226,61 +231,90 @@
 
     pre {
       margin: 0;
-      padding: 8px 10px;
-      font-family: "Consolas", "Cascadia Code", "Courier New", monospace;
-      font-size: 8pt;
-      line-height: 1.4;
+      padding: 6px 9px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 7.6pt;
+      line-height: 1.36;
       white-space: pre-wrap;
       word-break: break-word;
       color: var(--ink);
     }
 
-    /* Resaltado sobrio monocromático para impresión académica */
     .kw { color: #111827; font-weight: 700; }
     .ty { color: #1f2937; font-weight: 700; }
-    .st { color: #374151; }
+    .st { color: #374151; font-weight: 500; }
     .cm { color: #6b7280; font-style: italic; }
-    .nu { color: #111827; }
+    .nu { color: #111827; font-weight: 600; }
 
     /* Cajas analíticas sobrias */
     .callout {
       border: 1px solid var(--line-soft);
       border-left: 3px solid #374151;
       background: var(--bg-subtle);
-      padding: 9px 12px;
-      margin: 9px 0 11px 0;
-      font-size: 9.1pt;
+      padding: 7px 10px;
+      margin: 6px 0 9px 0;
+      font-size: 8.2pt;
+      line-height: 1.38;
       break-inside: avoid;
     }
 
     .callout-title {
-      font-family: "Segoe UI", Arial, sans-serif;
       font-weight: 700;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
       color: var(--ink);
     }
 
     /* Diagramas */
     .diagram-box {
       border: 1px solid var(--line-soft);
-      padding: 9px 11px;
-      margin: 9px 0 13px 0;
+      padding: 7px 9px;
+      margin: 6px 0 9px 0;
       background: #ffffff;
       text-align: center;
       break-inside: avoid;
     }
 
     .diagram-caption {
-      font-size: 8.5pt;
+      font-size: 7.9pt;
       color: var(--muted);
-      margin-top: 5px;
+      margin-top: 4px;
       font-style: italic;
+    }
+
+    /* Tabla compacta para sesión REPL y traza */
+    .repl-session {
+      padding: 6px 9px;
+      font-size: 7.4pt;
+      line-height: 1.32;
+      color: var(--ink);
+    }
+
+    .repl-line { margin: 1px 0; }
+    .repl-prompt { font-weight: 700; color: #111827; }
+    .repl-out { padding-left: 12px; color: #374151; }
+    .repl-err { padding-left: 12px; font-weight: 600; color: #111827; }
+
+    table.trace-mini {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 4px 0 2px 0;
+      font-size: 7pt;
+    }
+    table.trace-mini th, table.trace-mini td {
+      border: 1px solid #d1d5db;
+      padding: 2.5px 5px;
+      text-align: left;
+    }
+    table.trace-mini th {
+      background: #e5e7eb;
+      color: #111827;
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
 
-  <!-- PORTADA Y RESUMEN EJECUTIVO -->
+  <!-- PORTADA + PROPÓSITO + TABLA DE TRAZABILIDAD EN HOJA 1 -->
   <div class="cover">
     <div class="uni-header">
       <div class="uni">Universidad de Carabobo</div>
@@ -319,7 +353,7 @@
 
   <div class="callout">
     <div class="callout-title">Propósito del Informe y Trazabilidad Teoría ↔ Implementación</div>
-    Este informe analiza los fundamentos de diseño del lenguaje <strong>C#</strong> apoyándose en su especificación oficial (<strong>ECMA-334, 7.ª edición</strong> y la especificación de C# 12 de Microsoft), así como en la arquitectura de su compilador (<em>Roslyn</em>) y máquina virtual (<em>CLR</em>). Cada concepto teórico se vincula directamente con extractos del componente práctico desarrollado: un intérprete interactivo (<strong>Mini-REPL</strong>) en <strong>Notación Polaca Inversa estricta (RPN)</strong> con tipado fuerte, variables con semántica <em>L-value/R-value</em> y alcance local mediante bloques <code>begin ... end</code>.
+    Este informe analiza los fundamentos de diseño del lenguaje <strong>C#</strong> apoyándose en su especificación oficial (<strong>ECMA-334, 7.ª edición</strong> y referencia de C# 12 de Microsoft), el compilador <em>Roslyn</em> y el entorno de ejecución <em>CLR</em>. Cada eje teórico se vincula directamente con el código del componente práctico: un intérprete interactivo (<strong>Mini-REPL</strong>) en <strong>Notación Polaca Inversa estricta (RPN)</strong> con tipado fuerte, semántica <em>L-value/R-value</em> y bloques <code>begin ... end</code>.
   </div>
 
   <table class="data-table">
@@ -343,7 +377,7 @@
       </tr>
       <tr>
         <td><strong>3. Subrutinas, Parámetros y Memoria</strong></td>
-        <td>Paso por valor, referencia de objeto por valor, <code>ref</code>, <code>in</code>, <code>out</code> (§15.6.2); diferenciación Stack vs. Managed Heap, <code>ref struct</code> y GC generacional.</td>
+        <td>Paso por valor, referencia de objeto por valor, <code>ref</code>, <code>in</code>, <code>out</code> (§15.6.2); Stack vs. Managed Heap, <code>ref struct</code> y GC generacional.</td>
         <td><code>RpnEvaluator.cs</code> (paso explícito de pila, entorno e <code>in EvalOptions</code>, <code>ref int</code>, <code>ref bool</code>, <code>out</code>), <code>SpanTokenScanner</code> (<code>ref struct</code> sobre <code>ReadOnlySpan&lt;char&gt;</code>) y <code>PushLocalFrame(ref ScopeFrame)</code>.</td>
       </tr>
       <tr>
@@ -359,116 +393,91 @@
 
   <h3>1.1 Nombres, Palabras Reservadas e Identificadores</h3>
   <p>
-    De acuerdo con la especificación de C# (ECMA-334, Cap. 6), los identificadores son sensibles a mayúsculas y minúsculas (<em>case-sensitive</em>), admiten caracteres Unicode de categorías de letras y guion bajo inicial, y distinguen estrictamente entre <strong>palabras clave reservadas</strong> (<code>class</code>, <code>struct</code>, <code>ref</code>, <code>in</code>, <code>out</code>, <code>switch</code>) y <strong>palabras clave contextuales</strong> (<code>record</code>, <code>init</code>, <code>var</code>, <code>required</code>). Estas últimas permiten evolucionar la sintaxis del lenguaje sin invalidar identificadores en programas preexistentes.
-  </p>
-  <p>
-    En el Mini-REPL, el analizador léxico <code>SpanLexer</code> aplica una clasificación determinista sobre cada lexema extraído de <code>ReadOnlySpan&lt;char&gt;</code>: verifica primero operadores y palabras clave del lenguaje RPN (<code>true</code>, <code>false</code>, <code>begin</code>, <code>end</code>), luego literales numéricos enteros/flotantes y, por último, identificadores válidos iniciados en letra o <code>_</code>.
+    Según ECMA-334 (Cap. 6), los identificadores en C# son sensibles a mayúsculas y minúsculas (<em>case-sensitive</em>), admiten letras Unicode o guion bajo inicial, y distinguen entre <strong>palabras clave reservadas</strong> (<code>class</code>, <code>struct</code>, <code>ref</code>, <code>in</code>, <code>out</code>, <code>switch</code>) y <strong>palabras clave contextuales</strong> (<code>record</code>, <code>init</code>, <code>var</code>, <code>required</code>), permitiendo expandir el lenguaje sin romper compatibilidad con código previo. En el Mini-REPL, <code>SpanLexer</code> clasifica cada lexema sobre <code>ReadOnlySpan&lt;char&gt;</code> verificando primero operadores y palabras reservadas RPN (<code>true</code>, <code>false</code>, <code>begin</code>, <code>end</code>), luego literales numéricos y finalmente identificadores de usuario.
   </p>
 
   <h3>1.2 Tiempos de Vinculación (Binding Times) y Semántica L-value vs. R-value</h3>
   <p>
-    C# es un lenguaje predominantemente de <strong>vinculación estática</strong> (en compilación mediante Roslyn), combinando distintos instantes de enlace según la construcción:
+    C# es principalmente de <strong>vinculación estática</strong> (en compilación con Roslyn), articulando tres instantes de enlace: <strong>(a) tiempo de diseño</strong> (operadores nativos, <code>System.Int64</code>, <code>System.Double</code> y promoción numérica §10.2.3); <strong>(b) tiempo de compilación</strong> (resolución de nombres, chequeo de tipos, sobrecargas y flujo nulo); y <strong>(c) tiempo de ejecución (JIT/CLR)</strong> (despacho dinámico de interfaces <code>IRpnOperation.Apply</code> y resolución dinámica de variables del Mini-REPL en <code>SymbolEnvironment</code>).
   </p>
-  <ul>
-    <li><strong>Tiempo de diseño del lenguaje:</strong> operadores aritméticos y lógicos nativos, tipos primitivos del CLR (<code>System.Int64</code>, <code>System.Double</code>) y reglas de promoción numérica (ECMA-334 §10.2.3).</li>
-    <li><strong>Tiempo de compilación:</strong> resolución de nombres, verificación de tipos estáticos, selección de sobrecargas y análisis estático de nulabilidad.</li>
-    <li><strong>Tiempo de ejecución (JIT / CLR):</strong> despacho dinámico de interfaces (<code>IRpnOperation.Apply</code> vía tabla de métodos virtuales) y, en el intérprete RPN, enlace dinámico de variables del usuario en <code>SymbolEnvironment</code>.</li>
-  </ul>
   <p>
-    En un evaluador estrictamente postfijo, al leer el primer token de expresiones como <code>x 10 =</code> o <code>x x 1 + =</code> aún no se conoce si <code>x</code> actuará como valor (<strong>R-value</strong>) o como destino de asignación para <code>=</code> (<strong>L-value</strong>, incluso antes de existir). Aplicando la distinción clásica de Strachey, el tipo algebraico <code>StackSlot</code> modela ambos roles en la pila:
+    En notación postfija estricta, al leer el primer token de <code>x 10 =</code> o <code>x x 1 + =</code> aún se desconoce si <code>x</code> se usará como valor (<strong>R-value</strong>) o como destino izquierdo de asignación (<strong>L-value</strong>). Siguiendo a Strachey, el tipo algebraico <code>StackSlot</code> modela ambos estados en la pila:
   </p>
 
   <div class="code-box">
     <div class="code-header"><span>src/RpnRepl/Types/StackSlot.cs</span><span>L-value vs. R-value en pila</span></div>
-    <pre><span class="kw">public abstract record</span> <span class="ty">StackSlot</span>
-{
+    <pre><span class="kw">public abstract record</span> <span class="ty">StackSlot</span> {
     <span class="kw">private</span> StackSlot() { }
-
     <span class="kw">public sealed record</span> <span class="ty">ValueSlot</span>(<span class="ty">RpnValue</span> Value) : <span class="ty">StackSlot</span>;
-
-    <span class="kw">public sealed record</span> <span class="ty">SymbolSlot</span>(
-        <span class="kw">string</span> Name,
-        <span class="ty">RpnValue</span>? CapturedValue,
-        <span class="kw">int</span>? ScopeDepth,
-        <span class="ty">SourceSpan</span> Span) : <span class="ty">StackSlot</span>;
+    <span class="kw">public sealed record</span> <span class="ty">SymbolSlot</span>(<span class="kw">string</span> Name, <span class="ty">RpnValue</span>? CapturedValue, <span class="kw">int</span>? ScopeDepth, <span class="ty">SourceSpan</span> Span) : <span class="ty">StackSlot</span>;
 }</pre>
   </div>
 
   <p>
-    Si la variable existe al leer el token, <code>SymbolSlot</code> captura su valor actual (<code>CapturedValue</code>) como R-value inmediato y conserva su <code>Name</code> por si un operador <code>=</code> posterior la consume como L-value. Si no existe (<code>CapturedValue == null</code>) y ningún <code>=</code> la enlaza al concluir la línea, <code>FindDanglingUndefinedSymbol</code> la detecta y retorna <code>RpnError.UndefinedVariable</code> tras revertir transaccionalmente la pila.
+    Si la variable existe al leerse, <code>SymbolSlot</code> captura su valor actual (<code>CapturedValue</code>) como R-value inmediato y preserva su <code>Name</code> como L-value potencial para <code>=</code>. Si no existía y ningún <code>=</code> la consume al finalizar la línea, <code>FindDanglingUndefinedSymbol</code> reporta <code>RpnError.UndefinedVariable</code> tras revertir transaccionalmente la pila.
   </p>
 
   <h3>1.3 Estructuras de Control y Contexto Aritmético <code>checked</code></h3>
   <p>
-    Además de las estructuras imperativas clásicas (ECMA-334 §13: <code>if/switch</code>, <code>while/for/foreach</code>), C# incorpora <strong>expresiones <code>switch</code></strong> funcionales con <em>pattern matching</em> posicional, de tipo y relacional. En <code>RpnEvaluator.cs</code> y <code>ArithmeticOperation</code> coexisten un bucle <code>foreach</code> imperativo para recorrer tokens y expresiones <code>switch</code> junto a bloques <code>checked { ... }</code>.
+    Junto a las estructuras imperativas tradicionales (ECMA-334 §13: <code>if/switch</code>, <code>while/for/foreach</code>), C# ofrece <strong>expresiones <code>switch</code></strong> con <em>pattern matching</em> posicional, de tipo y relacional. En <code>RpnEvaluator.cs</code> y <code>ArithmeticOperation</code> se combinan bucles <code>foreach</code>, expresiones <code>switch</code> y bloques <code>checked { ... }</code>.
   </p>
 
   <div class="callout">
-    <div class="callout-title">Detalle de Especificación: Aritmética <code>checked</code> vs. <code>unchecked</code> (ECMA-334 §12.8.20)</div>
-    Por defecto en C#, la aritmética entera opera en contexto <code>unchecked</code> (desbordamiento silencioso en complemento a dos). En <code>ArithmeticOperation.ApplyInt</code> se emplea explícitamente un bloque <code>checked { ... }</code> para que desbordamientos como <code>9223372036854775807 1 +</code> lancen <code>OverflowException</code>, la cual se captura y traduce a <code>RpnError.ArithmeticOverflow</code> sin interrumpir la sesión del REPL.
+    <div class="callout-title">Detalle de Especificación: Contexto <code>checked</code> vs. <code>unchecked</code> (ECMA-334 §12.8.20)</div>
+    Por defecto en C#, la aritmética entera es <code>unchecked</code> (desbordamiento silencioso en complemento a dos). En <code>ArithmeticOperation.ApplyInt</code> se usa un bloque <code>checked { ... }</code> para que operaciones como <code>9223372036854775807 1 +</code> disparen <code>OverflowException</code>, capturada y convertida en <code>RpnError.ArithmeticOverflow</code> sin abortar el REPL.
   </div>
 
   <h3>1.4 Reglas de Alcance (Scoping) y Shadowing: C# frente al Mini-REPL</h3>
   <p>
-    C# implementa <strong>alcance léxico (estático) por bloques</strong> delimitados por llaves <code>{ ... }</code> (§7.6). Como regla de seguridad, el compilador <strong>prohíbe el <em>shadowing</em> de variables locales en bloques anidados</strong> dentro de un mismo método (error <code>CS0136</code>), evitando ocultamientos accidentales; en cambio, sí permite sombrear campos de instancia mediante parámetros o locales desambiguables con <code>this.</code>.
-  </p>
-  <p>
-    Para satisfacer los bloques temporales <code>begin ... end</code> en el Mini-REPL, <code>SymbolEnvironment</code> mantiene una cadena enlazada de marcos <code>ScopeFrame</code> con búsqueda ascendente hacia el alcance padre y escritura estricta en el marco más interno (<code>_currentScope.BindLocal</code>). Así, toda variable definida o modificada dentro de <code>begin ... end</code> genera <em>shadowing</em> temporal y desaparece al ejecutar <code>end</code> sin alterar las variables homónimas globales.
+    C# aplica <strong>alcance léxico estático por bloques</strong> (<code>{ ... }</code>, §7.6) y <strong>prohíbe el <em>shadowing</em> de variables locales</strong> en bloques anidados del mismo método (error <code>CS0136</code>), permitiendo solo sombrear campos de clase (desambiguados con <code>this.</code>). En cambio, para soportar bloques locales temporales <code>begin ... end</code> en el Mini-REPL, <code>SymbolEnvironment</code> utiliza una cadena enlazada de marcos <code>ScopeFrame</code> con búsqueda ascendente y escritura estricta en el marco más interno (<code>_currentScope.BindLocal</code>), generando <em>shadowing</em> local temporal sin sobrescribir las variables globales al ejecutar <code>end</code>.
   </p>
 
   <div class="diagram-box">
-    <svg width="650" height="190" viewBox="0 0 650 190" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
-      <rect x="0" y="0" width="650" height="190" fill="#ffffff" />
+    <svg width="640" height="164" viewBox="0 0 650 182" xmlns="http://www.w3.org/2000/svg" font-family="Montserrat, sans-serif">
+      <rect x="0" y="0" width="650" height="182" fill="#ffffff" />
+      <text x="95" y="16" font-size="9.2" font-weight="700" fill="#111827" text-anchor="middle">1. Antes de begin (nivel 0)</text>
+      <rect x="18" y="25" width="154" height="60" rx="3" fill="#f9fafb" stroke="#374151" stroke-width="1.3" />
+      <text x="95" y="41" font-size="8.4" font-weight="700" fill="#111827" text-anchor="middle">ScopeFrame (Depth = 0)</text>
+      <line x1="26" y1="47" x2="164" y2="47" stroke="#d1d5db" />
+      <text x="30" y="61" font-size="8" fill="#1f2937">x → Int(10)</text>
+      <text x="30" y="75" font-size="8" fill="#1f2937">y → Int(5)</text>
+      <text x="95" y="102" font-size="7.6" fill="#4b5563" text-anchor="middle">Parent = null</text>
+      <text x="95" y="118" font-size="7.6" font-weight="700" fill="#111827" text-anchor="middle">_currentScope ──▲</text>
 
-      <!-- Paso 1: Global -->
-      <text x="95" y="17" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">1. Antes de begin (nivel 0)</text>
-      <rect x="20" y="28" width="150" height="64" rx="4" fill="#f9fafb" stroke="#374151" stroke-width="1.4" />
-      <text x="95" y="45" font-size="9.2" font-weight="700" fill="#111827" text-anchor="middle">ScopeFrame (Depth = 0)</text>
-      <line x1="28" y1="51" x2="162" y2="51" stroke="#d1d5db" />
-      <text x="32" y="67" font-size="8.8" font-family="Consolas, monospace" fill="#1f2937">x → Int(10)</text>
-      <text x="32" y="82" font-size="8.8" font-family="Consolas, monospace" fill="#1f2937">y → Int(5)</text>
-      <text x="95" y="110" font-size="8.3" fill="#4b5563" text-anchor="middle">Parent = null</text>
-      <text x="95" y="128" font-size="8.3" font-weight="700" fill="#111827" text-anchor="middle">_currentScope ──▲</text>
+      <line x1="178" y1="55" x2="215" y2="55" stroke="#374151" stroke-width="1.3" />
+      <polygon points="215,51 223,55 215,59" fill="#374151" />
+      <text x="200" y="48" font-size="7.5" font-weight="700" fill="#111827" text-anchor="middle">begin</text>
 
-      <!-- Flecha 1 -> 2 -->
-      <line x1="178" y1="60" x2="216" y2="60" stroke="#374151" stroke-width="1.4" />
-      <polygon points="216,56 224,60 216,64" fill="#374151" />
-      <text x="201" y="52" font-size="8" font-weight="700" fill="#111827" text-anchor="middle">begin</text>
+      <text x="328" y="16" font-size="9.2" font-weight="700" fill="#111827" text-anchor="middle">2. Dentro de begin (nivel 1)</text>
+      <rect x="228" y="25" width="200" height="60" rx="3" fill="#f3f4f6" stroke="#111827" stroke-width="1.5" />
+      <text x="328" y="41" font-size="8.4" font-weight="700" fill="#111827" text-anchor="middle">ScopeFrame (Depth = 1)</text>
+      <line x1="236" y1="47" x2="420" y2="47" stroke="#d1d5db" />
+      <text x="240" y="61" font-size="8" font-weight="600" fill="#111827">x → Int(99) [shadow]</text>
+      <text x="240" y="75" font-size="8" fill="#1f2937">z → Int(15) [local]</text>
 
-      <!-- Paso 2: Dentro de begin -->
-      <text x="330" y="17" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">2. Dentro de begin (nivel 1)</text>
-      <rect x="232" y="28" width="196" height="64" rx="4" fill="#f3f4f6" stroke="#111827" stroke-width="1.6" />
-      <text x="330" y="45" font-size="9.2" font-weight="700" fill="#111827" text-anchor="middle">ScopeFrame (Depth = 1)</text>
-      <line x1="240" y1="51" x2="420" y2="51" stroke="#d1d5db" />
-      <text x="244" y="67" font-size="8.8" font-family="Consolas, monospace" fill="#111827">x → Int(99)  [shadow]</text>
-      <text x="244" y="82" font-size="8.8" font-family="Consolas, monospace" fill="#1f2937">z → Int(15)  [local]</text>
+      <rect x="248" y="110" width="160" height="55" rx="3" fill="#ffffff" stroke="#6b7280" stroke-width="1.1" stroke-dasharray="4,2" />
+      <text x="328" y="125" font-size="8" font-weight="700" fill="#374151" text-anchor="middle">Global intacto (Depth = 0)</text>
+      <text x="260" y="140" font-size="7.7" fill="#4b5563">x → Int(10) (oculto)</text>
+      <text x="260" y="153" font-size="7.7" fill="#1f2937">y → Int(5) (visible)</text>
 
-      <!-- Parent frame debajo -->
-      <rect x="255" y="118" width="150" height="58" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="4,2" />
-      <text x="330" y="134" font-size="8.8" font-weight="700" fill="#374151" text-anchor="middle">Global intacto (Depth = 0)</text>
-      <text x="267" y="150" font-size="8.4" font-family="Consolas, monospace" fill="#4b5563">x → Int(10) (oculto)</text>
-      <text x="267" y="164" font-size="8.4" font-family="Consolas, monospace" fill="#1f2937">y → Int(5)  (visible)</text>
+      <line x1="328" y1="85" x2="328" y2="103" stroke="#374151" stroke-width="1.3" />
+      <polygon points="324,103 328,110 332,103" fill="#374151" />
+      <text x="351" y="100" font-size="7.4" fill="#4b5563">Parent</text>
 
-      <line x1="330" y1="92" x2="330" y2="111" stroke="#374151" stroke-width="1.4" />
-      <polygon points="326,111 330,118 334,111" fill="#374151" />
-      <text x="354" y="108" font-size="8" fill="#4b5563">Parent</text>
+      <line x1="434" y1="55" x2="471" y2="55" stroke="#374151" stroke-width="1.3" />
+      <polygon points="471,51 479,55 471,59" fill="#374151" />
+      <text x="456" y="48" font-size="7.5" font-weight="700" fill="#111827" text-anchor="middle">end</text>
 
-      <!-- Flecha 2 -> 3 -->
-      <line x1="436" y1="60" x2="474" y2="60" stroke="#374151" stroke-width="1.4" />
-      <polygon points="474,56 482,60 474,64" fill="#374151" />
-      <text x="459" y="52" font-size="8" font-weight="700" fill="#111827" text-anchor="middle">end</text>
-
-      <!-- Paso 3: Tras end -->
-      <text x="558" y="17" font-size="10" font-weight="700" fill="#111827" text-anchor="middle">3. Tras end (nivel 0)</text>
-      <rect x="486" y="28" width="144" height="64" rx="4" fill="#f9fafb" stroke="#374151" stroke-width="1.4" />
-      <text x="558" y="45" font-size="9.2" font-weight="700" fill="#111827" text-anchor="middle">ScopeFrame (Depth = 0)</text>
-      <line x1="494" y1="51" x2="622" y2="51" stroke="#d1d5db" />
-      <text x="498" y="67" font-size="8.8" font-family="Consolas, monospace" fill="#111827">x → Int(10)  [intacto]</text>
-      <text x="498" y="82" font-size="8.8" font-family="Consolas, monospace" fill="#1f2937">y → Int(5)</text>
-      <text x="558" y="114" font-size="8.1" fill="#4b5563" text-anchor="middle">Frame nivel 1 recolectado</text>
-      <text x="558" y="126" font-size="8.1" fill="#4b5563" text-anchor="middle">por el GC; 'z' desaparece.</text>
+      <text x="558" y="16" font-size="9.2" font-weight="700" fill="#111827" text-anchor="middle">3. Tras end (nivel 0)</text>
+      <rect x="484" y="25" width="148" height="60" rx="3" fill="#f9fafb" stroke="#374151" stroke-width="1.3" />
+      <text x="558" y="41" font-size="8.4" font-weight="700" fill="#111827" text-anchor="middle">ScopeFrame (Depth = 0)</text>
+      <line x1="492" y1="47" x2="624" y2="47" stroke="#d1d5db" />
+      <text x="496" y="61" font-size="8" font-weight="600" fill="#111827">x → Int(10) [intacto]</text>
+      <text x="496" y="75" font-size="8" fill="#1f2937">y → Int(5)</text>
+      <text x="558" y="106" font-size="7.5" fill="#4b5563" text-anchor="middle">Frame nivel 1 recolectado</text>
+      <text x="558" y="117" font-size="7.5" fill="#4b5563" text-anchor="middle">por el GC; 'z' desaparece.</text>
     </svg>
-    <div class="diagram-caption">Figura 1. Evolución de la cadena de marcos <code>ScopeFrame</code> con shadowing local y recuperación del entorno previo tras <code>end</code>.</div>
+    <div class="diagram-caption">Figura 1. Evolución de la cadena de marcos <code>ScopeFrame</code> con shadowing local y preservación global tras <code>end</code>.</div>
   </div>
 
   <!-- SECCIÓN 2 -->
@@ -476,18 +485,13 @@
 
   <h3>2.1 El Common Type System (CTS) y Emulación de ADTs Cerrados en C# 12</h3>
   <p>
-    El sistema de tipos de C# (ECMA-334 §8) se apoya en el <em>Common Type System</em> (CTS) unificado del CLR, donde los tipos se dividen en <strong>tipos por valor</strong> (<code>struct</code>, <code>enum</code>, <code>readonly record struct</code>) y <strong>tipos por referencia</strong> (<code>class</code>, <code>record class</code>, <code>interface</code>, delegados), con genéricos reificados en tiempo de ejecución sin borrado de tipos.
-  </p>
-  <p>
-    Para modelar valores, tokens y errores del evaluador (Requisito #2), C# permite implementar <strong>Tipos Algebraicos de Datos (ADTs / Sum Types)</strong> mediante una jerarquía cerrada de <code>abstract record</code> con constructor <code>private</code> y variantes internas <code>sealed record</code>:
+    El sistema de tipos de C# (ECMA-334 §8) se fundamenta en el <em>Common Type System</em> (CTS) del CLR, dividiendo los tipos en <strong>tipos por valor</strong> (<code>struct</code>, <code>enum</code>, <code>readonly record struct</code>) y <strong>tipos por referencia</strong> (<code>class</code>, <code>record class</code>, <code>interface</code>), con genéricos reificados en ejecución. Para representar valores, tokens y errores del evaluador (Requisito #2), empleamos <strong>Tipos Algebraicos de Datos (ADTs)</strong> cerrados mediante <code>abstract record</code> con constructor <code>private</code> y variantes internas <code>sealed record</code>:
   </p>
 
   <div class="code-box">
     <div class="code-header"><span>src/RpnRepl/Types/RpnValue.cs &amp; Diagnostics/RpnError.cs</span><span>ADTs cerrados en C# 12</span></div>
-    <pre><span class="kw">public abstract record</span> <span class="ty">RpnValue</span>
-{
-    <span class="kw">private</span> RpnValue() { }  <span class="cm">// Impide herencia externa: suma cerrada de variantes</span>
-
+    <pre><span class="kw">public abstract record</span> <span class="ty">RpnValue</span> {
+    <span class="kw">private</span> RpnValue() { } <span class="cm">// Impide herencia externa: suma cerrada de variantes</span>
     <span class="kw">public sealed record</span> <span class="ty">IntValue</span>(<span class="kw">long</span> Value) : <span class="ty">RpnValue</span> { ... }
     <span class="kw">public sealed record</span> <span class="ty">FloatValue</span>(<span class="kw">double</span> Value) : <span class="ty">RpnValue</span> { ... }
     <span class="kw">public sealed record</span> <span class="ty">BoolValue</span>(<span class="kw">bool</span> Value) : <span class="ty">RpnValue</span> { ... }
@@ -496,38 +500,24 @@
 
   <h3>2.2 Chequeo Estático, Flujo Nulo, Inferencia y Chequeo Dinámico del Evaluador</h3>
   <p>
-    La verificación de tipos se articula en dos niveles complementarios:
+    La verificación opera en dos planos complementarios: <strong>(1) Chequeo estático en C# (Roslyn)</strong> con <code>&lt;Nullable&gt;enable&lt;/Nullable&gt;</code>, <code>&lt;TreatWarningsAsErrors&gt;true&lt;/TreatWarningsAsErrors&gt;</code> y atributos <code>[NotNullWhen(true/false)]</code> en <code>EvalResult&lt;T&gt;</code>, además de inferencia local estática (<code>var</code>, <code>new(...)</code>, <code>[...]</code>); y <strong>(2) Chequeo dinámico en el Mini-REPL</strong> (<code>TypeChecker.cs</code>) sobre las variantes de <code>RpnValue</code>: <code>Int</code> con <code>Int</code> produce <code>Int</code> (incluyendo división entera <code>7 2 / → 3</code>), la mezcla con <code>Float</code> promueve a <code>Float</code> (§10.2.3), y toda combinación inválida con <code>Bool</code> (<code>5 true +</code>, <code>5 true ==</code>) produce <code>RpnError.TypeMismatch</code>.
   </p>
-  <ol>
-    <li>
-      <strong>Chequeo estático y seguridad de nulos en C# (Roslyn):</strong> C# es estática y fuertemente tipado (no existe coerción implícita <code>bool → int</code>). Con <code>&lt;Nullable&gt;enable&lt;/Nullable&gt;</code> y <code>&lt;TreatWarningsAsErrors&gt;true&lt;/TreatWarningsAsErrors&gt;</code>, el compilador valida estáticamente la nulabilidad; en <code>EvalResult&lt;T&gt;</code>, los atributos <code>[NotNullWhen(true)]</code> y <code>[NotNullWhen(false)]</code> garantizan al compilador qué parámetro <code>out</code> queda inicializado como no nulo en cada rama.
-    </li>
-    <li>
-      <strong>Inferencia de tipos:</strong> se limita al ámbito local mediante <code>var</code> (resuelto estáticamente en compilación, distinto de <code>dynamic</code>), expresiones <code>new(...)</code> inferidas por tipo destino y expresiones de colección <code>[...]</code>.
-    </li>
-    <li>
-      <strong>Chequeo dinámico del Mini-REPL (<code>TypeChecker.cs</code>):</strong> en tiempo de evaluación de la pila, las operaciones distinguen entre <code>Int</code> (<code>Int64</code>), <code>Float</code> (<code>Double</code>) y <code>Bool</code>: <code>Int</code> con <code>Int</code> produce <code>Int</code> (incluyendo división entera <code>7 2 / → 3</code>), la combinación con <code>Float</code> promueve a <code>Float</code> (análoga a ECMA-334 §10.2.3), y cualquier mezcla inválida con <code>Bool</code> (como <code>5 true +</code> o <code>5 true ==</code>) retorna <code>RpnError.TypeMismatch</code>.
-    </li>
-  </ol>
 
   <div class="code-box">
     <div class="code-header"><span>src/RpnRepl/Engine/TypeChecker.cs</span><span>Promoción numérica y rechazo de Bool</span></div>
-    <pre><span class="kw">public static</span> <span class="ty">EvalResult</span>&lt;<span class="ty">NumericOperands</span>&gt; PromoteNumericPair(
-    <span class="kw">string</span> operatorSymbol, <span class="ty">RpnValue</span> left, <span class="ty">RpnValue</span> right, <span class="kw">in</span> <span class="ty">SourceSpan</span> span) =>
-    (left, right) <span class="kw">switch</span>
-    {
+    <pre><span class="kw">public static</span> <span class="ty">EvalResult</span>&lt;<span class="ty">NumericOperands</span>&gt; PromoteNumericPair(<span class="kw">string</span> op, <span class="ty">RpnValue</span> left, <span class="ty">RpnValue</span> right, <span class="kw">in</span> <span class="ty">SourceSpan</span> span) =>
+    (left, right) <span class="kw">switch</span> {
         (<span class="ty">RpnValue</span>.<span class="ty">IntValue</span> a, <span class="ty">RpnValue</span>.<span class="ty">IntValue</span> b)     => <span class="ty">EvalResult</span>&lt;<span class="ty">NumericOperands</span>&gt;.Ok(<span class="kw">new</span> <span class="ty">NumericOperands</span>.<span class="ty">IntPair</span>(a.Value, b.Value)),
         (<span class="ty">RpnValue</span>.<span class="ty">FloatValue</span> a, <span class="ty">RpnValue</span>.<span class="ty">FloatValue</span> b) => <span class="ty">EvalResult</span>&lt;<span class="ty">NumericOperands</span>&gt;.Ok(<span class="kw">new</span> <span class="ty">NumericOperands</span>.<span class="ty">FloatPair</span>(a.Value, b.Value)),
         (<span class="ty">RpnValue</span>.<span class="ty">IntValue</span> a, <span class="ty">RpnValue</span>.<span class="ty">FloatValue</span> b)   => <span class="ty">EvalResult</span>&lt;<span class="ty">NumericOperands</span>&gt;.Ok(<span class="kw">new</span> <span class="ty">NumericOperands</span>.<span class="ty">FloatPair</span>(a.Value, b.Value)),
         (<span class="ty">RpnValue</span>.<span class="ty">FloatValue</span> a, <span class="ty">RpnValue</span>.<span class="ty">IntValue</span> b)   => <span class="ty">EvalResult</span>&lt;<span class="ty">NumericOperands</span>&gt;.Ok(<span class="kw">new</span> <span class="ty">NumericOperands</span>.<span class="ty">FloatPair</span>(a.Value, b.Value)),
-        _ => <span class="ty">EvalResult</span>&lt;<span class="ty">NumericOperands</span>&gt;.Fail(
-            <span class="kw">new</span> <span class="ty">RpnError</span>.<span class="ty">TypeMismatch</span>(operatorSymbol, left.TypeName, right.TypeName, <span class="st">"(Int|Float, Int|Float)"</span>, span))
+        _ => <span class="ty">EvalResult</span>&lt;<span class="ty">NumericOperands</span>&gt;.Fail(<span class="kw">new</span> <span class="ty">RpnError</span>.<span class="ty">TypeMismatch</span>(op, left.TypeName, right.TypeName, <span class="st">"(Int|Float, Int|Float)"</span>, span))
     };</pre>
   </div>
 
   <h3>2.3 Equivalencia Nominal, Igualdad Estructural y Comparativa de Lenguajes</h3>
   <p>
-    La <strong>equivalencia de tipos en C# es nominal</strong>: dos <code>class</code>, <code>struct</code> o <code>record</code> con campos idénticos pero nombres distintos no son intercambiables sin conversión explícita (a diferencia del tipado estructural de TypeScript o interfaces de Go). No obstante, los <code>record</code> y <code>readonly record struct</code> sintetizan <strong>igualdad estructural por valor</strong> (<code>Equals</code>, <code>==</code>, <code>GetHashCode</code>), facilitando aserciones directas sobre valores y copias no destructivas mediante <code>with</code>.
+    La <strong>equivalencia de tipos en C# es nominal</strong> (dos <code>class</code> o <code>record</code> con campos idénticos son tipos distintos), pero <code>record</code> y <code>readonly record struct</code> generan automáticamente <strong>igualdad estructural por valor</strong> (<code>Equals</code>, <code>==</code>, <code>GetHashCode</code>) y copias no destructivas con <code>with</code>.
   </p>
 
   <table class="data-table">
@@ -545,29 +535,29 @@
         <td><strong>Momento de chequeo</strong></td>
         <td>Estático (con <code>dynamic</code> opcional)</td>
         <td>Estático</td>
-        <td>Estático borrable (runtime JS dinámico)</td>
+        <td>Estático borrable (runtime JS)</td>
         <td>Estático estricto</td>
       </tr>
       <tr>
         <td><strong>Equivalencia de tipos</strong></td>
-        <td>Nominal (tuplas por valor son estructurales)</td>
+        <td>Nominal (tuplas por valor estructurales)</td>
         <td>Nominal (salvo <code>typedef</code>)</td>
         <td>Estructural (<em>duck typing</em> estático)</td>
         <td>Nominal</td>
       </tr>
       <tr>
         <td><strong>Coerciones implícitas</strong></td>
-        <td>Solo seguras/ensanchantes; <code>bool</code> aislado</td>
+        <td>Solo ensanchantes; <code>bool</code> aislado</td>
         <td>Amplias (<code>bool ↔ int</code>)</td>
         <td>Heredadas de JS en runtime</td>
-        <td>Ninguna implícita (<code>as</code> explícito)</td>
+        <td>Ninguna (<code>as</code> explícito)</td>
       </tr>
       <tr>
-        <td><strong>Manejo de errores idiomático</strong></td>
-        <td>Excepciones CLR + patrón <code>Result</code> vía <code>record struct</code></td>
-        <td>Códigos de retorno / excepciones C++</td>
-        <td>Excepciones JS / uniones discriminadas</td>
-        <td><code>Result&lt;T, E&gt;</code> y <code>Option&lt;T&gt;</code> nativos</td>
+        <td><strong>Manejo de errores</strong></td>
+        <td>Excepciones CLR + <code>Result</code> (<code>record struct</code>)</td>
+        <td>Códigos / excepciones C++</td>
+        <td>Excepciones JS / uniones</td>
+        <td><code>Result&lt;T, E&gt;</code> / <code>Option&lt;T&gt;</code></td>
       </tr>
     </tbody>
   </table>
@@ -577,114 +567,102 @@
 
   <h3>3.1 Subrutinas y Paso de Parámetros en C# (ECMA-334 §15.6.2)</h3>
   <p>
-    C# ofrece control explícito sobre la transferencia de copias, referencias mutables y préstamos de solo lectura. En <code>RpnEvaluator</code>, la pila (<code>EvaluationStack</code>) y la tabla de símbolos (<code>SymbolEnvironment</code>) se pasan explícitamente a cada subrutina para evidenciar cada modalidad:
+    En <code>RpnEvaluator</code>, la pila (<code>EvaluationStack</code>) y la tabla de símbolos (<code>SymbolEnvironment</code>) se pasan explícitamente a cada subrutina para demostrar todos los mecanismos de paso de parámetros de C#:
   </p>
 
   <table class="data-table">
     <thead>
       <tr>
-        <th style="width: 20%;">Modo de Paso</th>
-        <th style="width: 38%;">Semántica en Memoria y Mutabilidad</th>
+        <th style="width: 21%;">Modo de Paso</th>
+        <th style="width: 37%;">Semántica en Memoria y Mutabilidad</th>
         <th style="width: 42%;">Uso Directo en el Mini-REPL</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><strong>Valor de tipo por valor</strong><br />(por defecto en <code>struct</code>)</td>
-        <td>Copia bit a bit de la estructura en el stack de la subrutina. Mutar la copia no altera al llamador.</td>
-        <td><code>EvalOptions</code>, <code>SourceSpan</code> en <code>Token</code> y <code>RpnError</code>. Verificado en pruebas al clonar opciones con <code>with</code>.</td>
+        <td><strong>Valor de tipo por valor</strong> (<code>struct</code>)</td>
+        <td>Copia bit a bit en el stack; mutar la copia no afecta al llamador.</td>
+        <td><code>EvalOptions</code>, <code>SourceSpan</code> en <code>Token</code> y <code>RpnError</code> (clonación segura con <code>with</code>).</td>
       </tr>
       <tr>
-        <td><strong>Referencia por valor</strong><br />(por defecto en <code>class</code>)</td>
-        <td>Copia la referencia hacia el Managed Heap. La subrutina muta el estado interno del objeto, pero no reasigna la variable del llamador.</td>
+        <td><strong>Referencia por valor</strong> (<code>class</code>)</td>
+        <td>Copia el puntero hacia el Heap; muta el estado interno del objeto sin reasignar la variable del llamador.</td>
         <td><code>EvaluationStack stack</code> y <code>SymbolEnvironment environment</code> en <code>EvaluateLine</code>, <code>ExecuteOperator</code> y <code>ExecuteAssignment</code>.</td>
       </tr>
       <tr>
         <td><strong><code>ref</code> (por referencia)</strong></td>
-        <td>Transfiere un <em>managed pointer</em> a la variable del llamador, permitiendo mutar o reasignar su referencia/valor original.</td>
-        <td><code>PushLocalFrame(ref ScopeFrame activeFrame)</code> y <code>TryPopLocalFrame(ref ScopeFrame)</code>; <code>ref int stepCounter</code> y <code>ref bool producedStackOutput</code>; <code>ref SymbolEnvironment</code> en <code>reset</code>.</td>
+        <td>Transfiere un <em>managed pointer</em> permitiendo mutar o reasignar la variable original.</td>
+        <td><code>PushLocalFrame(ref ScopeFrame)</code>, <code>TryPopLocalFrame(ref ScopeFrame)</code>, <code>ref int stepCounter</code>, <code>ref bool producedStackOutput</code>, <code>ref SymbolEnvironment</code>.</td>
       </tr>
       <tr>
         <td><strong><code>in</code> (referencia inmutable)</strong></td>
-        <td>Pasa un <code>struct</code> por referencia evitando copias y prohibiendo su modificación en compilación (análogo a <code>&amp;T</code> en Rust).</td>
-        <td><code>in EvalOptions options</code> en <code>EvaluateLine</code>, <code>in SourceSpan span</code> en <code>TypeChecker</code> y <code>IRpnOperation.Apply</code>, e <code>in StackSnapshot</code>.</td>
+        <td>Pasa un <code>struct</code> por referencia sin copia ni permiso de mutación (análogo a <code>&amp;T</code> en Rust).</td>
+        <td><code>in EvalOptions options</code>, <code>in SourceSpan span</code> e <code>in StackSnapshot</code>.</td>
       </tr>
       <tr>
         <td><strong><code>out</code> (salida obligatoria)</strong></td>
-        <td>Paso por referencia con asignación definitiva obligatoria antes de retornar de la subrutina.</td>
-        <td><code>TryLookup(name, out RpnValue? value, out int depth)</code>, <code>TryGetValue(out T? value, out RpnError? error)</code> y <code>TryPopTwoRValues(...)</code>.</td>
+        <td>Paso por referencia con asignación definitiva obligatoria antes de retornar.</td>
+        <td><code>TryLookup(..., out RpnValue?, out int)</code>, <code>TryGetValue(out T?, out RpnError?)</code> y <code>TryPopTwoRValues(...)</code>.</td>
       </tr>
     </tbody>
   </table>
 
   <div class="code-box">
     <div class="code-header"><span>src/RpnRepl/Memory/SymbolEnvironment.cs &amp; Engine/RpnEvaluator.cs</span><span>Paso explícito con ref, in y out</span></div>
-    <pre><span class="cm">// Reasignación directa del marco de alcance del llamador mediante puntero administrado (ref)</span>
-<span class="kw">private static void</span> PushLocalFrame(<span class="kw">ref</span> <span class="ty">ScopeFrame</span> activeFrame) =>
-    activeFrame = <span class="kw">new</span> <span class="ty">ScopeFrame</span>(activeFrame.Depth + <span class="nu">1</span>, activeFrame);
-
-<span class="cm">// Subrutina de evaluación: objetos por referencia, struct inmutable por 'in' y contadores por 'ref'</span>
-<span class="kw">public</span> <span class="ty">EvalResult</span>&lt;<span class="ty">EvaluationReport</span>&gt; EvaluateLine(
-    <span class="kw">string</span> line, <span class="ty">EvaluationStack</span> stack, <span class="ty">SymbolEnvironment</span> environment, <span class="kw">in</span> <span class="ty">EvalOptions</span> options)</pre>
+    <pre><span class="kw">private static void</span> PushLocalFrame(<span class="kw">ref</span> <span class="ty">ScopeFrame</span> activeFrame) => activeFrame = <span class="kw">new</span> <span class="ty">ScopeFrame</span>(activeFrame.Depth + <span class="nu">1</span>, activeFrame);
+<span class="kw">public</span> <span class="ty">EvalResult</span>&lt;<span class="ty">EvaluationReport</span>&gt; EvaluateLine(<span class="kw">string</span> line, <span class="ty">EvaluationStack</span> stack, <span class="ty">SymbolEnvironment</span> env, <span class="kw">in</span> <span class="ty">EvalOptions</span> opts)</pre>
   </div>
 
   <h3>3.2 Gestión de Memoria: Stack, Managed Heap, <code>ref struct</code> y Garbage Collector</h3>
   <p>
-    El CLR separa la memoria en el <strong>Stack de hilo</strong> (asignación y liberación determinista al entrar y salir de cada marco de llamada) y el <strong>Managed Heap</strong> (administrado por un Recolector de Basura generacional de tres generaciones: Gen 0, Gen 1 y Gen 2, compacto y libre de errores de liberación manual).
-  </p>
-  <p>
-    Para evitar asignaciones innecesarias al Heap durante el escaneo léxico, <code>SpanTokenScanner</code> se define como <code>ref struct</code> con un campo <code>ReadOnlySpan&lt;char&gt;</code>. El compilador restringe todo <code>ref struct</code> exclusivamente al Stack (prohibiendo <em>boxing</em> a <code>object</code>, almacenamiento en campos de clases o captura en lambdas), por lo que segmentar tokens por espacios no genera arreglos ni subcadenas intermedias.
+    El CLR divide la ejecución entre el <strong>Stack de hilo</strong> (liberación determinista O(1)) y el <strong>Managed Heap</strong> (GC generacional Gen 0/1/2). Para evitar asignaciones en el Heap al tokenizar, <code>SpanTokenScanner</code> se declara como <code>ref struct</code> sobre <code>ReadOnlySpan&lt;char&gt;</code>; el compilador prohíbe su <em>boxing</em> o almacenamiento en clases, garantizando que resida estrictamente en el Stack.
   </p>
 
   <div class="diagram-box">
-    <svg width="650" height="214" viewBox="0 0 650 214" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
-      <rect x="0" y="0" width="650" height="214" fill="#ffffff" />
+    <svg width="640" height="178" viewBox="0 0 650 202" xmlns="http://www.w3.org/2000/svg" font-family="Montserrat, sans-serif">
+      <rect x="0" y="0" width="650" height="202" fill="#ffffff" />
+      <rect x="12" y="8" width="282" height="186" rx="4" fill="#f9fafb" stroke="#374151" stroke-width="1.4" />
+      <text x="153" y="25" font-size="9" font-weight="700" fill="#111827" text-anchor="middle">THREAD STACK (Asignación determinista)</text>
 
-      <!-- Columna Stack -->
-      <rect x="14" y="10" width="278" height="194" rx="4" fill="#f9fafb" stroke="#374151" stroke-width="1.5" />
-      <text x="153" y="29" font-size="9.8" font-weight="700" fill="#111827" text-anchor="middle">THREAD STACK (Asignación determinista)</text>
+      <rect x="24" y="34" width="258" height="35" rx="3" fill="#ffffff" stroke="#6b7280" />
+      <text x="32" y="48" font-size="8" font-weight="700" fill="#111827">SpanTokenScanner (ref struct)</text>
+      <text x="32" y="61" font-size="7.1" fill="#374151">ReadOnlySpan&lt;char&gt; _source (ptr + len)</text>
 
-      <rect x="26" y="40" width="254" height="38" rx="3" fill="#ffffff" stroke="#6b7280" />
-      <text x="34" y="55" font-size="8.5" font-weight="700" fill="#111827">SpanTokenScanner (ref struct)</text>
-      <text x="34" y="69" font-size="7.4" font-family="Consolas, monospace" fill="#374151">ReadOnlySpan&lt;char&gt; _source (ptr + len)</text>
+      <rect x="24" y="74" width="258" height="33" rx="3" fill="#ffffff" stroke="#9ca3af" />
+      <text x="32" y="87" font-size="7.9" font-weight="700" fill="#111827">EvalOptions (in) · SourceSpan · EvalResult&lt;T&gt;</text>
+      <text x="32" y="100" font-size="7" fill="#4b5563">readonly record struct (0 bytes en Heap)</text>
 
-      <rect x="26" y="84" width="254" height="35" rx="3" fill="#ffffff" stroke="#9ca3af" />
-      <text x="34" y="98" font-size="8.4" font-weight="700" fill="#111827">EvalOptions (in) · SourceSpan · EvalResult&lt;T&gt;</text>
-      <text x="34" y="111" font-size="7.4" font-family="Consolas, monospace" fill="#4b5563">readonly record struct (0 bytes en Heap)</text>
+      <rect x="24" y="112" width="258" height="32" rx="3" fill="#ffffff" stroke="#9ca3af" />
+      <text x="32" y="125" font-size="7.9" font-weight="700" fill="#111827">ref stepCounter / ref producedStackOutput</text>
+      <text x="32" y="137" font-size="7" fill="#4b5563">Managed pointer al slot del llamador</text>
 
-      <rect x="26" y="125" width="254" height="33" rx="3" fill="#ffffff" stroke="#9ca3af" />
-      <text x="34" y="139" font-size="8.4" font-weight="700" fill="#111827">ref stepCounter / ref producedStackOutput</text>
-      <text x="34" y="151" font-size="7.4" font-family="Consolas, monospace" fill="#4b5563">Managed pointer hacia el slot del llamador</text>
+      <rect x="24" y="150" width="258" height="30" rx="3" fill="#f3f4f6" stroke="#374151" />
+      <text x="32" y="169" font-size="7.8" font-weight="600" fill="#111827">refs: stack, environment ───────────▶</text>
 
-      <rect x="26" y="164" width="254" height="29" rx="3" fill="#f3f4f6" stroke="#374151" />
-      <text x="34" y="182" font-size="8" font-family="Consolas, monospace" fill="#111827">refs: stack, environment ────────────▶</text>
+      <rect x="318" y="8" width="320" height="186" rx="4" fill="#f9fafb" stroke="#374151" stroke-width="1.4" />
+      <text x="478" y="25" font-size="9" font-weight="700" fill="#111827" text-anchor="middle">MANAGED HEAP (GC Generacional .NET 8)</text>
 
-      <!-- Columna Heap -->
-      <rect x="322" y="10" width="314" height="194" rx="4" fill="#f9fafb" stroke="#374151" stroke-width="1.5" />
-      <text x="479" y="29" font-size="9.8" font-weight="700" fill="#111827" text-anchor="middle">MANAGED HEAP (GC Generacional .NET 8)</text>
+      <rect x="330" y="34" width="142" height="50" rx="3" fill="#ffffff" stroke="#374151" />
+      <text x="401" y="48" font-size="8.2" font-weight="700" fill="#111827" text-anchor="middle">EvaluationStack</text>
+      <text x="338" y="62" font-size="7.2" fill="#1f2937">_slots: List&lt;StackSlot&gt;</text>
+      <text x="338" y="75" font-size="7" fill="#4b5563">Mutable encapsulado</text>
 
-      <rect x="334" y="40" width="140" height="52" rx="3" fill="#ffffff" stroke="#374151" />
-      <text x="404" y="55" font-size="8.6" font-weight="700" fill="#111827" text-anchor="middle">EvaluationStack</text>
-      <text x="342" y="70" font-size="7.6" font-family="Consolas, monospace" fill="#1f2937">_slots: List&lt;StackSlot&gt;</text>
-      <text x="342" y="83" font-size="7.4" fill="#4b5563">Mutable encapsulado</text>
+      <rect x="484" y="34" width="142" height="50" rx="3" fill="#ffffff" stroke="#374151" />
+      <text x="555" y="48" font-size="8.2" font-weight="700" fill="#111827" text-anchor="middle">SymbolEnvironment</text>
+      <text x="492" y="62" font-size="7.2" fill="#1f2937">ref _currentScope</text>
+      <text x="492" y="75" font-size="7" fill="#4b5563">Cadena ScopeFrame</text>
 
-      <rect x="486" y="40" width="138" height="52" rx="3" fill="#ffffff" stroke="#374151" />
-      <text x="555" y="55" font-size="8.6" font-weight="700" fill="#111827" text-anchor="middle">SymbolEnvironment</text>
-      <text x="494" y="70" font-size="7.6" font-family="Consolas, monospace" fill="#1f2937">ref _currentScope</text>
-      <text x="494" y="83" font-size="7.4" fill="#4b5563">Cadena ScopeFrame</text>
+      <rect x="330" y="94" width="296" height="44" rx="3" fill="#ffffff" stroke="#6b7280" />
+      <text x="338" y="109" font-size="7.8" font-weight="700" fill="#111827">Records Inmutables: Token, RpnValue, RpnError</text>
+      <text x="338" y="124" font-size="7.2" fill="#374151">IntValue(10) · IntValue(15) · IntValue(30)</text>
 
-      <rect x="334" y="102" width="290" height="45" rx="3" fill="#ffffff" stroke="#6b7280" />
-      <text x="342" y="117" font-size="8.2" font-weight="700" fill="#111827">Objetos Inmutables (Records): Token, RpnValue, RpnError</text>
-      <text x="342" y="133" font-size="7.5" font-family="Consolas, monospace" fill="#374151">IntValue(10) · IntValue(15) · IntValue(30) (inmutables)</text>
+      <rect x="330" y="146" width="296" height="36" rx="3" fill="#f3f4f6" stroke="#6b7280" />
+      <text x="338" y="160" font-size="7.6" font-weight="700" fill="#111827">Inmutabilidad para Transacciones:</text>
+      <text x="338" y="173" font-size="7.1" fill="#374151">CaptureSnapshot() copia referencias seguras a RpnValue.</text>
 
-      <rect x="334" y="155" width="290" height="38" rx="3" fill="#f3f4f6" stroke="#6b7280" />
-      <text x="342" y="170" font-size="8.1" font-weight="700" fill="#111827">Ventaja de Inmutabilidad para Transacciones:</text>
-      <text x="342" y="183" font-size="7.5" fill="#374151">CaptureSnapshot() copia solo referencias seguras a RpnValue.</text>
-
-      <!-- Flechas Stack -> Heap -->
-      <line x1="280" y1="178" x2="334" y2="72" stroke="#374151" stroke-width="1.3" />
-      <polygon points="328,70 335,71 332,77" fill="#374151" />
-      <line x1="280" y1="59" x2="334" y2="120" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="3,2" />
+      <line x1="282" y1="165" x2="330" y2="68" stroke="#374151" stroke-width="1.3" />
+      <polygon points="324,66 331,67 328,73" fill="#374151" />
+      <line x1="282" y1="51" x2="330" y2="112" stroke="#6b7280" stroke-width="1.2" stroke-dasharray="3,2" />
     </svg>
     <div class="diagram-caption">Figura 2. Distribución de memoria entre Stack (tipos por valor y <code>ref struct</code>) y Managed Heap durante la evaluación RPN.</div>
   </div>
@@ -694,64 +672,53 @@
 
   <h3>4.1 Encapsulación, Modificadores de Acceso e Invariantes</h3>
   <p>
-    La encapsulación en C# (ECMA-334 §7.5) regula la visibilidad con <code>public</code>, <code>private</code>, <code>protected</code>, <code>internal</code> y propiedades <code>init</code>. En <code>EvaluationStack</code> y <code>ScopeFrame</code>, las colecciones mutables subyacentes (<code>List&lt;StackSlot&gt;</code> y <code>Dictionary&lt;string, RpnValue&gt;</code>) son <code>private readonly</code>. Las subrutinas externas solo acceden mediante vistas de solo lectura (<code>IReadOnlyList&lt;StackSlot&gt;</code>, <code>IReadOnlyDictionary&lt;string, RpnValue&gt;</code>) o la interfaz segregada <code>IScopeLookup</code>, preservando los invariantes de pila y alcance.
+    Mediante modificadores de acceso (§7.5: <code>public</code>, <code>private</code>, <code>protected</code>, <code>internal</code>, <code>init</code>), <code>EvaluationStack</code> y <code>ScopeFrame</code> ocultan sus colecciones mutables internas (<code>_slots</code>, <code>_bindings</code>) como <code>private readonly</code> y exponen únicamente vistas de solo lectura (<code>IReadOnlyList&lt;StackSlot&gt;</code>, <code>IReadOnlyDictionary&lt;string, RpnValue&gt;</code>) o la interfaz segregada <code>IScopeLookup</code>.
   </p>
 
   <h3>4.2 Interfaces vs. Clases Abstractas: Polimorfismo Abierto y Composición</h3>
   <p>
-    C# separa la <strong>herencia simple de clases</strong> de la <strong>implementación múltiple de interfaces</strong> (ECMA-334 §19). El diseño del evaluador combina ambas estrategias según la naturaleza de cada componente:
+    C# separa herencia simple de implementación múltiple de interfaces (§19). El motor combina <strong>polimorfismo abierto por interfaces y composición</strong> (<code>IRpnOperation</code>, <code>IOperationRegistry</code>, inyectado en el constructor primario de <code>RpnEvaluator</code>) con <strong>polimorfismo cerrado mediante <code>abstract record</code></strong> (<code>Token</code>, <code>RpnValue</code>, <code>RpnError</code>) para dominios de variantes fijas.
   </p>
-  <ul>
-    <li><strong>Polimorfismo abierto mediante interfaces y composición (<code>IRpnOperation</code>, <code>IOperationRegistry</code>):</strong> desacopla la implementación de operadores (<code>ArithmeticOperation</code>, <code>ComparisonOperation</code>) del motor <code>RpnEvaluator(IOperationRegistry operations)</code> mediante inyección de dependencias en su constructor primario.</li>
-    <li><strong>Polimorfismo cerrado mediante <code>abstract record</code> (<code>Token</code>, <code>RpnValue</code>, <code>RpnError</code>):</strong> modela dominios cerrados donde las variantes son fijas y se manipulan mediante <em>pattern matching</em>.</li>
-  </ul>
 
-  <div class="diagram-box" style="margin: 6px 0 8px 0; padding: 7px 10px;">
-    <svg width="650" height="154" viewBox="0 0 650 172" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
-      <rect x="0" y="0" width="650" height="172" fill="#ffffff" />
+  <div class="diagram-box">
+    <svg width="640" height="146" viewBox="0 0 650 166" xmlns="http://www.w3.org/2000/svg" font-family="Montserrat, sans-serif">
+      <rect x="0" y="0" width="650" height="166" fill="#ffffff" />
 
-      <!-- RpnEvaluator -->
-      <rect x="12" y="16" width="182" height="62" rx="4" fill="#f9fafb" stroke="#111827" stroke-width="1.5" />
-      <text x="103" y="34" font-size="9.2" font-weight="700" fill="#111827" text-anchor="middle">RpnEvaluator</text>
-      <line x1="20" y1="40" x2="186" y2="40" stroke="#d1d5db" />
-      <text x="20" y="54" font-size="7.3" font-family="Consolas, monospace" fill="#1f2937">- _operations: IOperationRegistry</text>
-      <text x="20" y="68" font-size="7.3" font-family="Consolas, monospace" fill="#1f2937">+ EvaluateLine(line, stack, env)</text>
+      <rect x="10" y="12" width="186" height="60" rx="3" fill="#f9fafb" stroke="#111827" stroke-width="1.4" />
+      <text x="103" y="29" font-size="8.6" font-weight="700" fill="#111827" text-anchor="middle">RpnEvaluator</text>
+      <line x1="18" y1="35" x2="188" y2="35" stroke="#d1d5db" />
+      <text x="18" y="48" font-size="6.9" fill="#1f2937">- _operations: IOperationRegistry</text>
+      <text x="18" y="61" font-size="6.9" fill="#1f2937">+ EvaluateLine(line, stack, env)</text>
 
-      <!-- IOperationRegistry -->
-      <rect x="224" y="16" width="194" height="50" rx="4" fill="#ffffff" stroke="#374151" stroke-width="1.4" stroke-dasharray="4,2" />
-      <text x="321" y="33" font-size="8.3" font-weight="700" fill="#111827" text-anchor="middle">&laquo;interface&raquo; IOperationRegistry</text>
-      <text x="232" y="51" font-size="7.3" font-family="Consolas, monospace" fill="#1f2937">+ TryResolve(op, out IRpnOperation?)</text>
+      <rect x="224" y="12" width="194" height="48" rx="3" fill="#ffffff" stroke="#374151" stroke-width="1.3" stroke-dasharray="4,2" />
+      <text x="321" y="28" font-size="7.8" font-weight="700" fill="#111827" text-anchor="middle">&laquo;interface&raquo; IOperationRegistry</text>
+      <text x="232" y="45" font-size="6.9" fill="#1f2937">+ TryResolve(op, out IRpnOperation?)</text>
 
-      <!-- OperationRegistry -->
-      <rect x="224" y="100" width="194" height="50" rx="4" fill="#f9fafb" stroke="#374151" stroke-width="1.4" />
-      <text x="321" y="118" font-size="8.8" font-weight="700" fill="#111827" text-anchor="middle">OperationRegistry</text>
-      <text x="232" y="135" font-size="7.2" font-family="Consolas, monospace" fill="#4b5563">Dict&lt;RpnOperator, IRpnOperation&gt;</text>
+      <rect x="224" y="94" width="194" height="48" rx="3" fill="#f9fafb" stroke="#374151" stroke-width="1.3" />
+      <text x="321" y="111" font-size="8.2" font-weight="700" fill="#111827" text-anchor="middle">OperationRegistry</text>
+      <text x="232" y="127" font-size="6.8" fill="#4b5563">Dict&lt;RpnOperator, IRpnOperation&gt;</text>
 
-      <!-- IRpnOperation -->
-      <rect x="448" y="16" width="188" height="50" rx="4" fill="#ffffff" stroke="#374151" stroke-width="1.4" stroke-dasharray="4,2" />
-      <text x="542" y="33" font-size="8.3" font-weight="700" fill="#111827" text-anchor="middle">&laquo;interface&raquo; IRpnOperation</text>
-      <text x="458" y="51" font-size="7.3" font-family="Consolas, monospace" fill="#1f2937">+ Apply(left, right, in span)</text>
+      <rect x="446" y="12" width="192" height="48" rx="3" fill="#ffffff" stroke="#374151" stroke-width="1.3" stroke-dasharray="4,2" />
+      <text x="542" y="28" font-size="7.8" font-weight="700" fill="#111827" text-anchor="middle">&laquo;interface&raquo; IRpnOperation</text>
+      <text x="456" y="45" font-size="6.9" fill="#1f2937">+ Apply(left, right, in span)</text>
 
-      <!-- Implementaciones -->
-      <rect x="448" y="94" width="188" height="27" rx="3" fill="#f9fafb" stroke="#374151" />
-      <text x="542" y="111" font-size="8.1" font-weight="600" fill="#111827" text-anchor="middle">ArithmeticOperation (+,-,*,/,%)</text>
+      <rect x="446" y="88" width="192" height="26" rx="3" fill="#f9fafb" stroke="#374151" />
+      <text x="542" y="104" font-size="7.5" font-weight="600" fill="#111827" text-anchor="middle">ArithmeticOperation (+, -, *, /, %)</text>
 
-      <rect x="448" y="129" width="188" height="27" rx="3" fill="#f9fafb" stroke="#374151" />
-      <text x="542" y="146" font-size="8.1" font-weight="600" fill="#111827" text-anchor="middle">ComparisonOperation (==,!=,&lt;,&gt;)</text>
+      <rect x="446" y="122" width="192" height="26" rx="3" fill="#f9fafb" stroke="#374151" />
+      <text x="542" y="138" font-size="7.5" font-weight="600" fill="#111827" text-anchor="middle">ComparisonOperation (==, !=, &lt;, &gt;)</text>
 
-      <!-- IScopeLookup -->
-      <rect x="12" y="102" width="182" height="48" rx="4" fill="#ffffff" stroke="#374151" stroke-width="1.4" stroke-dasharray="4,2" />
-      <text x="103" y="119" font-size="8.3" font-weight="700" fill="#111827" text-anchor="middle">&laquo;interface&raquo; IScopeLookup</text>
-      <text x="22" y="137" font-size="7.3" font-family="Consolas, monospace" fill="#1f2937">SymbolEnvironment : IScopeLookup</text>
+      <rect x="10" y="96" width="186" height="46" rx="3" fill="#ffffff" stroke="#374151" stroke-width="1.3" stroke-dasharray="4,2" />
+      <text x="103" y="112" font-size="7.8" font-weight="700" fill="#111827" text-anchor="middle">&laquo;interface&raquo; IScopeLookup</text>
+      <text x="20" y="129" font-size="6.9" fill="#1f2937">SymbolEnvironment : IScopeLookup</text>
 
-      <!-- Conectores -->
-      <line x1="194" y1="42" x2="224" y2="42" stroke="#111827" stroke-width="1.3" />
-      <polygon points="217,38 224,42 217,46" fill="#111827" />
-      <line x1="321" y1="100" x2="321" y2="66" stroke="#374151" stroke-width="1.3" stroke-dasharray="3,2" />
-      <polygon points="317,73 321,66 325,73" fill="#ffffff" stroke="#374151" />
-      <line x1="418" y1="42" x2="448" y2="42" stroke="#374151" stroke-width="1.3" />
-      <line x1="542" y1="94" x2="542" y2="66" stroke="#374151" stroke-width="1.3" stroke-dasharray="3,2" />
-      <polygon points="538,73 542,66 546,73" fill="#ffffff" stroke="#374151" />
+      <line x1="196" y1="37" x2="224" y2="37" stroke="#111827" stroke-width="1.3" />
+      <polygon points="217,33 224,37 217,41" fill="#111827" />
+      <line x1="321" y1="94" x2="321" y2="60" stroke="#374151" stroke-width="1.2" stroke-dasharray="3,2" />
+      <polygon points="317,67 321,60 325,67" fill="#ffffff" stroke="#374151" />
+      <line x1="418" y1="37" x2="446" y2="37" stroke="#374151" stroke-width="1.3" />
+      <line x1="542" y1="88" x2="542" y2="60" stroke="#374151" stroke-width="1.2" stroke-dasharray="3,2" />
+      <polygon points="538,67 542,60 546,67" fill="#ffffff" stroke="#374151" />
     </svg>
     <div class="diagram-caption">Figura 3. Composición mediante interfaces (<code>IOperationRegistry</code>, <code>IRpnOperation</code>, <code>IScopeLookup</code>) en el motor RPN.</div>
   </div>
@@ -759,49 +726,44 @@
   <!-- SECCIÓN 5: SÍNTESIS DE VERIFICACIÓN -->
   <h2>5. Verificación Práctica y Sesión Demostrativa del Mini-REPL</h2>
   <p>
-    El evaluador implementa estrictamente el algoritmo de pila LIFO para <strong>Notación Polaca Inversa</strong> (sin paréntesis y preservando el orden relativo de operandos: en operadores no conmutativos como <code>-</code> y <code>/</code>, <code>TryPopTwoRValues</code> extrae el tope como operando derecho y el inmediato inferior como izquierdo, evaluando <code>10 2 - → 8</code> y <code>15 7 1 1 + - / 3 * 2 1 1 + + - → 5</code>). El comportamiento completo fue validado mediante pruebas unitarias automatizadas con xUnit y ejecución interactiva del intérprete.
+    El evaluador aplica el algoritmo clásico de pila LIFO para <strong>Notación Polaca Inversa</strong> (sin paréntesis y preservando el orden relativo de operandos: en operadores no conmutativos como <code>-</code> y <code>/</code>, <code>TryPopTwoRValues</code> extrae el tope como operando derecho y el inmediato inferior como izquierdo, evaluando <code>10 2 - → 8</code> y <code>15 7 1 1 + - / 3 * 2 1 1 + + - → 5</code>). Toda la arquitectura fue validada mediante pruebas unitarias automatizadas con xUnit y ejecución interactiva.
   </p>
 
-  <div class="code-box" style="margin: 6px 0 8px 0;">
+  <div class="code-box">
     <div class="code-header"><span>Ejecución verificada de RpnRepl (RPN clásico + errores + scoping + --trace)</span><span>Salida real capturada</span></div>
-    <pre style="font-size: 7.15pt; line-height: 1.25; padding: 7px 10px;">rpn[global]> 5 1 2 + 4 * + 3 -
-  => 14 : Int
-rpn[global]> clear
-Pila vaciada.
-rpn[global]> x 10 =
-  x = 10 : Int [nivel 0]
-rpn[global]> x 5 + 2 *
-  => 30 : Int
-rpn[global]> 5 true +
-  [!] Error de tipos en [7..8): '+' no admite operandos (Int, Bool); se esperaba (Int|Float, Int|Float).
-    5 true +
-           ^
-rpn[global]> begin
-  → Entró a bloque local (nivel 1)
-rpn[local:1]> x 99 =
-  x = 99 : Int [nivel 1]
-rpn[local:1]> vars
-Entorno activo [bloque local (nivel 1)]:
-  x = 99 : Int  (@ nivel 1)  [sombrea a x = 10 : Int @ nivel 0]
-rpn[local:1]> end
-  ← Salió de bloque local (global)
-rpn[global]> x
-  => 10 : Int  [pila: 2 elementos]
-rpn[global]> clear
-Pila vaciada.
-rpn[global]> trace
-Modo traza paso a paso: ACTIVADO.
-rpn[global]> 3 4 2 * +
-  [Traza de ejecución]
-    #1  token='3     ' | nivel=0 | push 3 : Int                       | pila=[3 : Int]
-    #2  token='4     ' | nivel=0 | push 4 : Int                       | pila=[3 : Int, 4 : Int]
-    #3  token='2     ' | nivel=0 | push 2 : Int                       | pila=[3 : Int, 4 : Int, 2 : Int]
-    #4  token='*     ' | nivel=0 | op '*' -> 8 : Int                  | pila=[3 : Int, 8 : Int]
-    #5  token='+     ' | nivel=0 | op '+' -> 11 : Int                 | pila=[11 : Int]
-  => 11 : Int</pre>
+    <div class="repl-session">
+      <div class="repl-line"><span class="repl-prompt">rpn[global]&gt;</span> 5 1 2 + 4 * + 3 -</div>
+      <div class="repl-out">=&gt; 14 : Int</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[global]&gt;</span> clear &nbsp;→&nbsp; Pila vaciada.</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[global]&gt;</span> x 10 =</div>
+      <div class="repl-out">x = 10 : Int [nivel 0]</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[global]&gt;</span> x 5 + 2 *</div>
+      <div class="repl-out">=&gt; 30 : Int</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[global]&gt;</span> 5 true +</div>
+      <div class="repl-err">[!] Error de tipos en [7..8): '+' no admite operandos (Int, Bool); se esperaba (Int|Float, Int|Float).</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[global]&gt;</span> begin &nbsp;→&nbsp; Entró a bloque local (nivel 1)</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[local:1]&gt;</span> x 99 = &nbsp;→&nbsp; x = 99 : Int [nivel 1]</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[local:1]&gt;</span> vars &nbsp;→&nbsp; x = 99 : Int (@ nivel 1) [sombrea a x = 10 : Int @ nivel 0]</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[local:1]&gt;</span> end &nbsp;→&nbsp; ← Salió de bloque local (global)</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[global]&gt;</span> x</div>
+      <div class="repl-out">=&gt; 10 : Int [pila: 2 elementos]</div>
+      <div class="repl-line"><span class="repl-prompt">rpn[global]&gt;</span> clear &nbsp;|&nbsp; <span class="repl-prompt">rpn[global]&gt;</span> trace (ACTIVADO) &nbsp;|&nbsp; <span class="repl-prompt">rpn[global]&gt;</span> 3 4 2 * +</div>
+      <table class="trace-mini">
+        <thead>
+          <tr><th>Paso</th><th>Token</th><th>Nivel</th><th>Acción sobre Pila</th><th>Pila resultante</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>#1</td><td>3</td><td>0</td><td>push 3 : Int</td><td>[3 : Int]</td></tr>
+          <tr><td>#2</td><td>4</td><td>0</td><td>push 4 : Int</td><td>[3 : Int, 4 : Int]</td></tr>
+          <tr><td>#3</td><td>2</td><td>0</td><td>push 2 : Int</td><td>[3 : Int, 4 : Int, 2 : Int]</td></tr>
+          <tr><td>#4</td><td>*</td><td>0</td><td>op '*' → 8 : Int</td><td>[3 : Int, 8 : Int]</td></tr>
+          <tr><td>#5</td><td>+</td><td>0</td><td>op '+' → 11 : Int</td><td>[11 : Int] &nbsp;<strong>=&gt; 11 : Int</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="callout" style="margin: 6px 0 0 0; padding: 7px 11px; font-size: 8.6pt;">
+  <div class="callout" style="margin: 6px 0 0 0; padding: 6px 10px; font-size: 7.9pt;">
     <div class="callout-title">Referencias Técnicas</div>
     <strong>[1]</strong> Ecma International. <em>Standard ECMA-334: C# Language Specification</em>, 7.ª ed. (2023). &nbsp;|&nbsp;
     <strong>[2]</strong> Microsoft. <em>C# Language Reference &amp; .NET 8</em>. &nbsp;|&nbsp;
