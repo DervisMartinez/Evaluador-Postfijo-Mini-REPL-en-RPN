@@ -1,0 +1,16 @@
+# .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+TestResults/
+*.trx
+*.coverage
+
+# OS / Editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
